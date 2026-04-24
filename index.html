@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Focus & Flex | コワーキング × ジム複合施設</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ========== HEADER ========== -->
+  <header class="header" id="top">
+    <div class="header__inner">
+      <a href="#top" class="logo">
+        <span class="logo__focus">Focus</span><span class="logo__amp">&</span><span class="logo__flex">Flex</span>
+      </a>
+      <nav class="nav" id="nav">
+        <ul class="nav__list">
+          <li><a href="#concept">Concept</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#simulator">Simulator</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#access">Access</a></li>
+        </ul>
+      </nav>
+      <a href="#simulator" class="btn btn--outline header__cta">料金を試算する</a>
+      <button class="hamburger" id="hamburger" aria-label="メニューを開く">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ========== HERO ========== -->
+  <section class="hero">
+    <div class="hero__bg">
+      <div class="hero__bg-work"></div>
+      <div class="hero__bg-gym"></div>
+    </div>
+    <div class="hero__content">
+      <p class="hero__eyebrow">Work Smarter. Train Harder.</p>
+      <h1 class="hero__title">
+        集中と解放が、<br />ひとつの場所に。
+      </h1>
+      <p class="hero__sub">
+        コワーキングスペースとプレミアムジムが融合した<br class="pc-only" />
+        新しいワークスタイルの拠点。
+      </p>
+      <div class="hero__actions">
+        <a href="#simulator" class="btn btn--primary">過ごし方をシミュレート</a>
+        <a href="#concept" class="btn btn--ghost">詳しく見る</a>
+      </div>
+    </div>
+    <div class="hero__scroll">
+      <span>Scroll</span>
+      <div class="hero__scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ========== CONCEPT ========== -->
+  <section class="concept section" id="concept">
+    <div class="container">
+      <div class="section-label">Concept</div>
+      <h2 class="section-title">仕事の「静」と<br />運動の「動」</h2>
+      <p class="section-desc">
+        深い集中が生産性を高め、適度な運動がその集中力を回復させる。<br />
+        Focus &amp; Flex は、その好循環をひとつの空間で実現します。
+      </p>
+      <div class="concept__split">
+        <div class="concept__card concept__card--work">
+          <div class="concept__card-img">
+            <img
+              src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80"
+              alt="ミニマルなコワーキングスペース"
+              loading="lazy"
+            />
+          </div>
+          <div class="concept__card-body">
+            <span class="tag tag--blue">Work</span>
+            <h3>静 — Deep Focus</h3>
+            <p>防音個室ブース、高速Wi-Fi、人間工学デスク。ノイズゼロの環境で、あなたの最高のアウトプットを引き出します。</p>
+          </div>
+        </div>
+        <div class="concept__card concept__card--gym">
+          <div class="concept__card-img">
+            <img
+              src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80"
+              alt="スタイリッシュなジムエリア"
+              loading="lazy"
+            />
+          </div>
+          <div class="concept__card-body">
+            <span class="tag tag--orange">Gym</span>
+            <h3>動 — Full Release</h3>
+            <p>最新マシン、パーソナルトレーニング、シャワールーム完備。仕事の合間に、身体をリセットしてください。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FEATURES ========== -->
+  <section class="features section" id="features">
+    <div class="container">
+      <div class="section-label">Features</div>
+      <h2 class="section-title">すべての設備が、<br />あなたのパフォーマンスのために</h2>
+      <div class="features__grid">
+
+        <div class="feature-card">
+          <div class="feature-card__icon">💻</div>
+          <h3>個室ワークブース</h3>
+          <p>完全防音の集中ブース。ビデオ会議も快適に行えます。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon">⚡</div>
+          <h3>10Gbps 光回線</h3>
+          <p>超高速インターネットで、クラウド作業もストレスフリー。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon">🏋️</div>
+          <h3>プレミアムジム</h3>
+          <p>最新のフリーウェイト・マシンエリア。24時間利用可能。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon">🚿</div>
+          <h3>シャワー＆ロッカー</h3>
+          <p>トレーニング後もすっきり。アメニティ完備のシャワールーム。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon">☕</div>
+          <h3>カフェ＆プロテインバー</h3>
+          <p>オーガニックコーヒーからプロテインスムージーまで。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon">📅</div>
+          <h3>会議室（予約制）</h3>
+          <p>4〜12名対応の会議室。プロジェクターや4Kモニター完備。</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SIMULATOR ========== -->
+  <section class="simulator section" id="simulator">
+    <div class="container">
+      <div class="section-label">Simulator</div>
+      <h2 class="section-title">あなたの過ごし方を<br />シミュレートする</h2>
+      <p class="section-desc">滞在時間とオプションを選ぶだけで、おすすめの過ごし方と料金が分かります。</p>
+
+      <div class="sim__wrapper">
+        <div class="sim__form">
+
+          <div class="sim__group">
+            <label class="sim__label">滞在時間</label>
+            <div class="sim__options" id="sim-hours">
+              <button class="sim__opt" data-value="2">2時間</button>
+              <button class="sim__opt" data-value="4">4時間</button>
+              <button class="sim__opt" data-value="8">8時間（1日）</button>
+            </div>
+          </div>
+
+          <div class="sim__group">
+            <label class="sim__label">利用エリア</label>
+            <div class="sim__options" id="sim-area">
+              <button class="sim__opt" data-value="work">Work のみ</button>
+              <button class="sim__opt" data-value="gym">Gym のみ</button>
+              <button class="sim__opt" data-value="both">Work + Gym</button>
+            </div>
+          </div>
+
+          <div class="sim__group">
+            <label class="sim__label">オプション（複数選択可）</label>
+            <div class="sim__options sim__options--check" id="sim-options">
+              <button class="sim__opt" data-value="booth">個室ブース</button>
+              <button class="sim__opt" data-value="locker">ロッカー</button>
+              <button class="sim__opt" data-value="cafe">カフェ1ドリンク</button>
+              <button class="sim__opt" data-value="personal">パーソナルトレーニング</button>
+            </div>
+          </div>
+
+          <button class="btn btn--primary sim__submit" id="sim-submit">シミュレートする</button>
+        </div>
+
+        <div class="sim__result" id="sim-result">
+          <div class="sim__result-inner">
+            <div class="sim__result-placeholder">
+              <span>👆</span>
+              <p>左の条件を選択して<br />シミュレートしてください</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== GALLERY ========== -->
+  <section class="gallery section" id="gallery">
+    <div class="container">
+      <div class="section-label">Gallery</div>
+      <h2 class="section-title">空間を、体感する</h2>
+    </div>
+    <div class="gallery__grid">
+      <div class="gallery__item gallery__item--wide">
+        <img src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=1200&q=80" alt="コワーキングスペース全景" loading="lazy" />
+      </div>
+      <div class="gallery__item">
+        <img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=600&q=80" alt="ジムエリア" loading="lazy" />
+      </div>
+      <div class="gallery__item">
+        <img src="https://images.unsplash.com/photo-1521017432531-fbd92d768814?w=600&q=80" alt="カフェスペース" loading="lazy" />
+      </div>
+      <div class="gallery__item">
+        <img src="https://images.unsplash.com/photo-1593079831268-3381b0db4a77?w=600&q=80" alt="個室ブース" loading="lazy" />
+      </div>
+      <div class="gallery__item">
+        <img src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=600&q=80" alt="トレーニングマシン" loading="lazy" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PRICING ========== -->
+  <section class="pricing section" id="pricing">
+    <div class="container">
+      <div class="section-label">Pricing</div>
+      <h2 class="section-title">シンプルな料金体系</h2>
+      <div class="pricing__grid">
+
+        <div class="pricing__card">
+          <span class="tag tag--blue">Work</span>
+          <h3 class="pricing__name">Work Pass</h3>
+          <div class="pricing__price">¥<span>500</span><small>/時間</small></div>
+          <ul class="pricing__list">
+            <li>✓ フリーデスク利用</li>
+            <li>✓ 高速Wi-Fi</li>
+            <li>✓ ドリンクバー</li>
+            <li>✗ ジムエリア</li>
+          </ul>
+          <a href="#simulator" class="btn btn--primary">試算する</a>
+        </div>
+
+        <div class="pricing__card pricing__card--featured">
+          <span class="tag tag--gradient">Best Value</span>
+          <h3 class="pricing__name">Focus & Flex Pass</h3>
+          <div class="pricing__price">¥<span>800</span><small>/時間</small></div>
+          <ul class="pricing__list">
+            <li>✓ フリーデスク利用</li>
+            <li>✓ 高速Wi-Fi</li>
+            <li>✓ ドリンクバー</li>
+            <li>✓ ジムエリア</li>
+            <li>✓ シャワー利用</li>
+          </ul>
+          <a href="#simulator" class="btn btn--primary">試算する</a>
+        </div>
+
+        <div class="pricing__card">
+          <span class="tag tag--orange">Gym</span>
+          <h3 class="pricing__name">Gym Pass</h3>
+          <div class="pricing__price">¥<span>400</span><small>/時間</small></div>
+          <ul class="pricing__list">
+            <li>✗ コワーキング</li>
+            <li>✓ ジムエリア</li>
+            <li>✓ シャワー利用</li>
+            <li>✓ ロッカー</li>
+          </ul>
+          <a href="#simulator" class="btn btn--primary">試算する</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== ACCESS ========== -->
+  <section class="access section" id="access">
+    <div class="container">
+      <div class="section-label">Access</div>
+      <h2 class="section-title">アクセス</h2>
+      <div class="access__inner">
+        <div class="access__info">
+          <dl class="access__dl">
+            <dt>住所</dt>
+            <dd>〒260-0017 千葉県千葉市中央区要町14-15<br />DXビジョンセンタービル</dd>
+            <dt>最寄り駅</dt>
+            <dd>JR総武線 千葉駅 徒歩15分<br />JR総武線 東千葉駅 徒歩10分</dd>
+            <dt>営業時間</dt>
+            <dd>6:00 〜 24:00（年中無休）</dd>
+            <dt>電話</dt>
+            <dd>043-0000-0000</dd>
+          </dl>
+          <button class="btn btn--primary js-gmail-modal">見学を予約する</button>
+        </div>
+        <div class="access__map">
+          <div id="leaflet-map"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CTA BANNER ========== -->
+  <section class="cta-banner">
+    <div class="container">
+      <h2>まず、体験してみませんか？</h2>
+      <p>初回トライアル 2時間 <strong>無料</strong>。予約はオンラインで完結します。</p>
+      <button class="btn btn--primary btn--lg js-gmail-modal">無料体験を予約する</button>
+    </div>
+  </section>
+
+  <!-- ========== MAIL MODAL ========== -->
+  <div class="gmail-modal" id="gmail-modal" role="dialog" aria-modal="true" aria-label="予約メール作成">
+    <div class="gmail-modal__backdrop" id="gmail-backdrop"></div>
+    <div class="gmail-modal__box">
+      <div class="gmail-modal__header">
+        <span class="gmail-modal__title">📧 予約・見学のお申し込み</span>
+        <button class="gmail-modal__close" id="gmail-close" aria-label="閉じる">✕</button>
+      </div>
+      <div class="mail-form">
+        <div class="mail-form__field">
+          <label class="mail-form__label">To</label>
+          <input class="mail-form__input" type="text" value="info@focusandflex.jp" readonly />
+        </div>
+        <div class="mail-form__field">
+          <label class="mail-form__label">件名</label>
+          <input class="mail-form__input" id="mail-subject" type="text" value="【予約】Focus &amp; Flex 見学・体験のお申し込み" />
+        </div>
+        <div class="mail-form__field mail-form__field--grow">
+          <label class="mail-form__label">本文</label>
+          <textarea class="mail-form__textarea" id="mail-body">Focus &amp; Flex ご担当者様
+
+以下の内容でお申し込みいたします。
+
+■ お名前：
+■ ご希望日時（第1希望）：
+■ ご希望日時（第2希望）：
+■ 利用エリア：　□ Work　□ Gym　□ 両方
+■ ご質問・ご要望：
+
+
+よろしくお願いいたします。</textarea>
+        </div>
+        <div class="mail-form__actions">
+          <button class="btn btn--ghost" id="gmail-close-2">キャンセル</button>
+          <button class="btn btn--primary" id="mail-send">メーラーで送信する ↗</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== BACK TO TOP ========== -->
+  <button class="back-to-top" id="back-to-top" aria-label="ページトップへ戻る">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 15V5M10 5L5 10M10 5L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span>TOP</span>
+  </button>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <a href="#top" class="logo">
+        <span class="logo__focus">Focus</span><span class="logo__amp">&</span><span class="logo__flex">Flex</span>
+      </a>
+      <nav class="footer__nav">
+        <a href="#concept">Concept</a>
+        <a href="#features">Features</a>
+        <a href="#simulator">Simulator</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#access">Access</a>
+      </nav>
+      <p class="footer__copy">&copy; 2026 Focus &amp; Flex. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
