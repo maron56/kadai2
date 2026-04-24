@@ -273,8 +273,8 @@
     </div>
   </section>
 
-  <!-- ========== ACCESS ========== -->
-  <section class="access section" id="access">
+  <!-- ========== ACCESS + CTA ========== -->
+  <section class="access-wrap section" id="access">
     <div class="container">
       <div class="section-label">Access</div>
       <h2 class="section-title">アクセス</h2>
@@ -296,17 +296,125 @@
           <div id="leaflet-map"></div>
         </div>
       </div>
+
+      <!-- CTA をAccess内に統合 -->
+      <div class="access-cta">
+        <p>初回トライアル 2時間 <strong>無料</strong>。まず、体験してみませんか？</p>
+        <button class="btn btn--primary js-gmail-modal">無料体験を予約する</button>
+      </div>
     </div>
   </section>
 
-  <!-- ========== CTA BANNER ========== -->
-  <section class="cta-banner">
-    <div class="container">
-      <h2>まず、体験してみませんか？</h2>
-      <p>初回トライアル 2時間 <strong>無料</strong>。予約はオンラインで完結します。</p>
-      <button class="btn btn--primary btn--lg js-gmail-modal">無料体験を予約する</button>
+  <!-- ========== BOOKING MODAL ========== -->
+  <div class="booking-modal" id="booking-modal" role="dialog" aria-modal="true" aria-label="予約">
+    <div class="booking-modal__backdrop" id="booking-backdrop"></div>
+    <div class="booking-modal__box">
+
+      <!-- STEP 1: カレンダー -->
+      <div class="booking-step" id="booking-step-1">
+        <div class="booking-modal__header">
+          <span class="booking-modal__title">📅 日程を選ぶ</span>
+          <button class="gmail-modal__close" id="booking-close" aria-label="閉じる">✕</button>
+        </div>
+        <div class="booking-modal__body">
+          <div class="cal">
+            <div class="cal__nav">
+              <button class="cal__nav-btn" id="cal-prev">‹</button>
+              <span class="cal__month" id="cal-month"></span>
+              <button class="cal__nav-btn" id="cal-next">›</button>
+            </div>
+            <div class="cal__grid">
+              <div class="cal__dow">日</div><div class="cal__dow">月</div>
+              <div class="cal__dow">火</div><div class="cal__dow">水</div>
+              <div class="cal__dow">木</div><div class="cal__dow">金</div>
+              <div class="cal__dow">土</div>
+            </div>
+            <div class="cal__days" id="cal-days"></div>
+          </div>
+          <div class="cal__legend">
+            <span class="cal__legend-item"><span class="cal__dot cal__dot--open"></span>空きあり</span>
+            <span class="cal__legend-item"><span class="cal__dot cal__dot--few"></span>残りわずか</span>
+            <span class="cal__legend-item"><span class="cal__dot cal__dot--full"></span>満員</span>
+          </div>
+        </div>
+        <div class="booking-modal__footer">
+          <button class="btn btn--ghost" id="booking-close-2">キャンセル</button>
+          <button class="btn btn--primary" id="step1-next" disabled>時間帯を選ぶ →</button>
+        </div>
+      </div>
+
+      <!-- STEP 2: 時間帯 -->
+      <div class="booking-step" id="booking-step-2" style="display:none">
+        <div class="booking-modal__header">
+          <button class="cal__nav-btn" id="step2-back">‹</button>
+          <span class="booking-modal__title">🕐 時間帯を選ぶ</span>
+          <button class="gmail-modal__close" id="booking-close-3" aria-label="閉じる">✕</button>
+        </div>
+        <div class="booking-modal__body">
+          <p class="booking-date-label" id="booking-date-label"></p>
+          <div class="timeslot__grid" id="timeslot-grid"></div>
+        </div>
+        <div class="booking-modal__footer">
+          <button class="btn btn--ghost" id="step2-back-btn">← 日程に戻る</button>
+          <button class="btn btn--primary" id="step2-next" disabled>情報を入力 →</button>
+        </div>
+      </div>
+
+      <!-- STEP 3: 入力フォーム -->
+      <div class="booking-step" id="booking-step-3" style="display:none">
+        <div class="booking-modal__header">
+          <button class="cal__nav-btn" id="step3-back">‹</button>
+          <span class="booking-modal__title">✏️ お客様情報</span>
+          <button class="gmail-modal__close" id="booking-close-4" aria-label="閉じる">✕</button>
+        </div>
+        <div class="booking-modal__body">
+          <div class="booking-summary" id="booking-summary"></div>
+          <div class="booking-form">
+            <div class="booking-form__field">
+              <label>お名前 <span class="req">*</span></label>
+              <input type="text" id="b-name" placeholder="山田 太郎" />
+            </div>
+            <div class="booking-form__field">
+              <label>メールアドレス <span class="req">*</span></label>
+              <input type="email" id="b-email" placeholder="example@email.com" />
+            </div>
+            <div class="booking-form__field">
+              <label>電話番号</label>
+              <input type="tel" id="b-tel" placeholder="090-0000-0000" />
+            </div>
+            <div class="booking-form__field">
+              <label>備考</label>
+              <textarea id="b-note" rows="2" placeholder="ご要望があればご記入ください"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="booking-modal__footer">
+          <button class="btn btn--ghost" id="step3-back-btn">← 時間帯に戻る</button>
+          <button class="btn btn--primary" id="step3-submit">予約を確定する ✓</button>
+        </div>
+      </div>
+
+      <!-- STEP 4: 完了 -->
+      <div class="booking-step" id="booking-step-4" style="display:none">
+        <div class="booking-modal__header">
+          <span class="booking-modal__title">予約完了</span>
+          <button class="gmail-modal__close" id="booking-close-5" aria-label="閉じる">✕</button>
+        </div>
+        <div class="booking-modal__body booking-modal__body--center">
+          <div class="booking-complete">
+            <div class="booking-complete__icon">✅</div>
+            <h3>ご予約が完了しました</h3>
+            <div class="booking-complete__detail" id="booking-complete-detail"></div>
+            <p class="booking-complete__note">確認メールをお送りしました。<br />当日はお気軽にお越しください。</p>
+          </div>
+        </div>
+        <div class="booking-modal__footer">
+          <button class="btn btn--primary" id="booking-done">閉じる</button>
+        </div>
+      </div>
+
     </div>
-  </section>
+  </div>
 
   <!-- ========== MAIL MODAL ========== -->
   <div class="gmail-modal" id="gmail-modal" role="dialog" aria-modal="true" aria-label="予約メール作成">

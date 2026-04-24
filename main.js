@@ -392,3 +392,234 @@ window.addEventListener('scroll', () => {
 backToTop.addEventListener('click', () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
+
+/* ===========================
+   BOOKING MODAL
+=========================== */
+(function () {
+
+  // --- 予約状況ダミーデータ生成 ---
+  function getSlotStatus(dateStr, hour) {
+    // 日付と時間からシードを作り疑似ランダムで状態を決定
+    let seed = 0;
+    for (let i = 0; i < dateStr.length; i++) seed += dateStr.charCodeAt(i);
+    seed += hour * 7;
+    const r = ((seed * 1103515245 + 12345) & 0x7fffffff) % 100;
+    if (r < 20) return 'full';
+    if (r < 45) return 'few';
+    return 'open';
+  }
+
+  // --- カレンダー ---
+  let calYear, calMonth;
+  let selectedDate = null;
+  let selectedTime = null;
+  let simSnapshot  = null;
+
+  function initCal() {
+    const now = new Date();
+    calYear  = now.getFullYear();
+    calMonth = now.getMonth();
+    renderCal();
+  }
+
+  function renderCal() {
+    const monthNames = ['January','February','March','April','May','June',
+                        'July','August','September','October','November','December'];
+    document.getElementById('cal-month').textContent =
+      `${calYear}年 ${calMonth + 1}月`;
+
+    const today    = new Date();
+    today.setHours(0,0,0,0);
+    const firstDay = new Date(calYear, calMonth, 1).getDay();
+    const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+
+    const container = document.getElementById('cal-days');
+    container.innerHTML = '';
+
+    // 空白セル
+    for (let i = 0; i < firstDay; i++) {
+      const el = document.createElement('div');
+      el.className = 'cal__day cal__day--empty';
+      container.appendChild(el);
+    }
+
+    for (let d = 1; d <= daysInMonth; d++) {
+      const date    = new Date(calYear, calMonth, d);
+      const dateStr = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+      const isPast  = date < today;
+
+      // その日の代表ステータス（9時スロットで判定）
+      const status  = getSlotStatus(dateStr, 9);
+
+      const el = document.createElement('div');
+      el.className = 'cal__day';
+      if (isPast)  el.classList.add('cal__day--past');
+      if (status === 'full' && !isPast) el.classList.add('cal__day--full');
+      if (date.toDateString() === today.toDateString()) el.classList.add('cal__day--today');
+      if (selectedDate === dateStr) el.classList.add('selected');
+
+      const dotClass = status === 'full' ? 'dot-full' : status === 'few' ? 'dot-few' : 'dot-open';
+      el.innerHTML = `<span>${d}</span>${!isPast ? `<span class="cal__status-dot ${dotClass}"></span>` : ''}`;
+
+      if (!isPast && status !== 'full') {
+        el.addEventListener('click', () => {
+          selectedDate = dateStr;
+          selectedTime = null;
+          document.getElementById('step1-next').disabled = false;
+          renderCal();
+        });
+      }
+      container.appendChild(el);
+    }
+  }
+
+  document.getElementById('cal-prev').addEventListener('click', () => {
+    calMonth--;
+    if (calMonth < 0) { calMonth = 11; calYear--; }
+    renderCal();
+  });
+  document.getElementById('cal-next').addEventListener('click', () => {
+    calMonth++;
+    if (calMonth > 11) { calMonth = 0; calYear++; }
+    renderCal();
+  });
+
+  // --- タイムスロット ---
+  function renderTimeslots() {
+    const hours = [9,10,11,12,13,14,15,16,17,18,19,20];
+    const grid  = document.getElementById('timeslot-grid');
+    grid.innerHTML = '';
+
+    const [y, m, d] = selectedDate.split('-');
+    document.getElementById('booking-date-label').textContent =
+      `${y}年${parseInt(m)}月${parseInt(d)}日`;
+
+    hours.forEach(h => {
+      const status = getSlotStatus(selectedDate, h);
+      const btn = document.createElement('button');
+      btn.className = 'timeslot' + (status === 'full' ? ' timeslot--full' : '');
+      const label = status === 'full' ? '満員' : status === 'few' ? '残りわずか' : '空きあり';
+      btn.innerHTML = `<span>${String(h).padStart(2,'0')}:00〜</span><span class="timeslot__status">${label}</span>`;
+      if (status !== 'full') {
+        btn.addEventListener('click', () => {
+          selectedTime = h;
+          grid.querySelectorAll('.timeslot').forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+          document.getElementById('step2-next').disabled = false;
+        });
+      }
+      grid.appendChild(btn);
+    });
+  }
+
+  // --- 予約サマリー ---
+  function renderSummary() {
+    const [y, m, d] = selectedDate.split('-');
+    const planNames = { work: 'Work Pass', gym: 'Gym Pass', both: 'Focus & Flex Pass' };
+    const plan = simSnapshot ? planNames[simSnapshot.area] || '' : '';
+    const price = simSnapshot ? `¥${simSnapshot.total.toLocaleString()}` : '';
+    document.getElementById('booking-summary').innerHTML =
+      `<strong>日時：</strong>${y}年${parseInt(m)}月${parseInt(d)}日 ${String(selectedTime).padStart(2,'0')}:00〜<br>` +
+      (plan  ? `<strong>プラン：</strong>${plan}<br>` : '') +
+      (price ? `<strong>料金目安：</strong>${price}` : '');
+  }
+
+  // --- ステップ切り替え ---
+  function showStep(n) {
+    document.querySelectorAll('.booking-step').forEach(el => el.style.display = 'none');
+    document.getElementById(`booking-step-${n}`).style.display = '';
+  }
+
+  document.getElementById('step1-next').addEventListener('click', () => {
+    renderTimeslots();
+    showStep(2);
+  });
+  document.getElementById('step2-next').addEventListener('click', () => {
+    renderSummary();
+    showStep(3);
+  });
+  ['step2-back','step2-back-btn'].forEach(id => {
+    document.getElementById(id).addEventListener('click', () => showStep(1));
+  });
+  ['step3-back','step3-back-btn'].forEach(id => {
+    document.getElementById(id).addEventListener('click', () => showStep(2));
+  });
+
+  // --- 予約確定 ---
+  document.getElementById('step3-submit').addEventListener('click', () => {
+    const name  = document.getElementById('b-name').value.trim();
+    const email = document.getElementById('b-email').value.trim();
+    if (!name || !email) {
+      ['b-name','b-email'].forEach(id => {
+        const el = document.getElementById(id);
+        if (!el.value.trim()) el.style.borderColor = 'var(--clr-gym)';
+      });
+      return;
+    }
+    const [y, m, d] = selectedDate.split('-');
+    const planNames = { work: 'Work Pass', gym: 'Gym Pass', both: 'Focus & Flex Pass' };
+    const plan  = simSnapshot ? planNames[simSnapshot.area] || '—' : '—';
+    const price = simSnapshot ? `¥${simSnapshot.total.toLocaleString()}` : '—';
+    document.getElementById('booking-complete-detail').innerHTML =
+      `<strong>お名前：</strong>${name}<br>` +
+      `<strong>日時：</strong>${y}年${parseInt(m)}月${parseInt(d)}日 ${String(selectedTime).padStart(2,'0')}:00〜<br>` +
+      `<strong>プラン：</strong>${plan}<br>` +
+      `<strong>料金目安：</strong>${price}`;
+    showStep(4);
+  });
+
+  // --- モーダル開閉 ---
+  const modal = document.getElementById('booking-modal');
+
+  function openBookingModal() {
+    selectedDate = null;
+    selectedTime = null;
+    document.getElementById('step1-next').disabled = true;
+    document.getElementById('step2-next').disabled = true;
+    document.getElementById('b-name').value  = '';
+    document.getElementById('b-email').value = '';
+    document.getElementById('b-tel').value   = '';
+    document.getElementById('b-note').value  = '';
+    initCal();
+    showStep(1);
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeBookingModal() {
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  ['booking-close','booking-close-2','booking-close-3',
+   'booking-close-4','booking-close-5','booking-backdrop','booking-done'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('click', closeBookingModal);
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && modal.classList.contains('open')) closeBookingModal();
+  });
+
+  // --- シミュレーター結果に「予約する」ボタンを注入 ---
+  const origSubmit = document.getElementById('sim-submit');
+  origSubmit.addEventListener('click', () => {
+    // 少し遅らせてrenderResult後に実行
+    setTimeout(() => {
+      const inner = document.querySelector('.sim__result-inner');
+      if (!inner || inner.querySelector('.sim__reserve')) return;
+      if (!state.hours || !state.area) return;
+
+      // シミュレート結果を保存
+      simSnapshot = { area: state.area, total: calculate().total };
+
+      const btn = document.createElement('button');
+      btn.className = 'btn sim__reserve';
+      btn.textContent = '📅 この内容で予約する';
+      btn.addEventListener('click', openBookingModal);
+      inner.querySelector('.sim__output')?.appendChild(btn);
+    }, 50);
+  });
+
+})();
